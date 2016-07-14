@@ -57,7 +57,7 @@ class muSQUIDS: public nuSQUIDS {
   protected:
     // These scalar functions will manage the muon decay and energy loss
     double GammaScalar(unsigned int ei,unsigned int index_scalar) const {
-      double muon_decay_term = -state[ei].scalar[index_scalar]*inv_lambda[ei];
+      double muon_decay_term = state[ei].scalar[index_scalar]*inv_lambda[ei];
       return nuSQUIDS::GammaScalar(ei,index_scalar) + muon_decay_term;
     }
     double InteractionsScalar(unsigned int ei,unsigned int index_scalar) const {
@@ -109,7 +109,10 @@ class muSQUIDS: public nuSQUIDS {
           state[ie].scalar[ir] = muon_flux[ie][ir];
         }
       }
+    }
 
+    double GetMuonFlux(unsigned int ie, unsigned int irho){
+      return state[ie].scalar[irho];
     }
 };
 

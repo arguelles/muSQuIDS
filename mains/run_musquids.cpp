@@ -16,14 +16,14 @@ int main()
   muSQUIDS musq(e_nodes);
 
   std::shared_ptr<Vacuum> vacuum = std::make_shared<Vacuum>();
-  std::shared_ptr<Vacuum::Track> vacuum_track = std::make_shared<Vacuum::Track>(100.*units.meter);
+  std::shared_ptr<Vacuum::Track> vacuum_track = std::make_shared<Vacuum::Track>(500.*units.meter);
   musq.Set_Body(vacuum);
   musq.Set_Track(vacuum_track);
 
   // construct muon flux
   marray<double,2> muon_flux({e_nodes.size(),2});
   for(size_t ie=0; ie<e_nodes.size(); ie++){
-    muon_flux[ie][0] = 0.;
+    muon_flux[ie][0] = 1.;
     muon_flux[ie][1] = 0.;
   }
 
@@ -42,6 +42,10 @@ int main()
   musq.Set_ProgressBar(true);
 
   musq.EvolveState();
+
+  for(size_t ie=0; ie<e_nodes.size(); ie++){
+    std::cout << e_nodes[ie]/units.GeV << " " << musq.GetMuonFlux(ie,0) << " " << musq.GetMuonFlux(ie,1) << std::endl;
+  }
 
   return 0;
 }
