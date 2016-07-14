@@ -78,6 +78,8 @@ class muSQUIDS: public nuSQUIDS {
       scalar_spline(new gsl_spline,[](gsl_spline* t){ gsl_spline_free(t); delete t;}),
       scalar_spline_acc(new gsl_interp_accel,[](gsl_interp_accel* t){ gsl_interp_accel_free(t); delete t;})
     {
+      // resetting squids nodes to the right scalar size
+      ini(ne,numneu,nrhos,2,Get_t());
       // initializing the muon decay lenght
       inv_lambda.resize(ne);
       for(unsigned int ei=0; ei<ne; ei++)
