@@ -70,7 +70,7 @@ int LoadData(nusquids::marray<double,1>& e_nodes, nusquids::marray<double,2>& mu
   // Fill the vectors
   for(int i=0; i!=e_nodes.size(); ++i)
     { 
-      e_nodes[i]=stod(ENodes[i]);
+      e_nodes[i]=stod(ENodes[i])*1.e9;
 
       // The indexing convention in Bens MCEq files
       //  says that the total flux of flavor F is at 
