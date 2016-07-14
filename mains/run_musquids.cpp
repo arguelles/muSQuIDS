@@ -20,6 +20,28 @@ int main()
   musq.Set_Body(vacuum);
   musq.Set_Track(vacuum_track);
 
+  // construct muon flux
+  marray<double,2> muon_flux({e_nodes.size(),2});
+  for(size_t ie=0; ie<e_nodes.size(); ie++){
+    muon_flux[ie][0] = 1.;
+    muon_flux[ie][1] = 1.;
+  }
+
+  marray<double,3> neutrino_state({e_nodes.size(),2,musq.GetNumNeu()});
+  std::fill(neutrino_state.begin(),neutrino_state.end(),0);
+
+  /*
+   * fill this with a real neutrino flux later
+  for(size_t ie=0; ie<e_nodes.size(); ie++){
+    neutrino_state[ie][0] = 1.;
+    neutrino_state[ie][1] = 1.;
+  }
+  */
+
+  musq.Set_initial_state(muon_flux,neutrino_state,flavor);
+  musq.Set_ProgressBar(true);
+
+  musq.EvolveState();
 
   return 0;
 }

@@ -102,7 +102,7 @@ class muSQUIDS: public nuSQUIDS {
       scalar_spline_acc.reset(gsl_interp_accel_alloc());
     }
 
-    void Set_initial_state(const marray<double,2>& muon_flux,const marray<double,2>& neutrino_state,nusquids::Basis basis)
+    void Set_initial_state(const marray<double,2>& muon_flux,const marray<double,3>& neutrino_state,nusquids::Basis basis)
     {
       nuSQUIDS::Set_initial_state(neutrino_state,basis);
 
