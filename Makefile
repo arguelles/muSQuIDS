@@ -1,9 +1,7 @@
 # FLAGS
-<<<<<<< HEAD
+
 CFLAGS= -O3 -fPIC -std=c++11 
-=======
-CFLAGS= -O3 -fPIC -std=c++11 -g
->>>>>>> 5e91f7263e23d3eac934afcd461be6e484109600
+
 CFLAGS+= -I./inc `pkg-config --cflags nusquids`
 LDFLAGS+= `pkg-config --libs nusquids` -lsupc++
 

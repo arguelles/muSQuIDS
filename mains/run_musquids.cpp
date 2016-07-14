@@ -22,6 +22,9 @@ int LoadData(nusquids::marray<double,1>& e_nodes, nusquids::marray<double,2>& mu
   using namespace boost;
 
   // Open text file
+  std::cout<<"Opening the flux file " << FileName<<std::endl;
+
+
   std::string data(FileName.c_str());
   std::ifstream in(data.c_str());
   if (!in.is_open()) 
@@ -88,17 +91,24 @@ int LoadData(nusquids::marray<double,1>& e_nodes, nusquids::marray<double,2>& mu
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
 
-  //Load from text
   squids::Const units;
 
   nusquids::marray<double,1> e_nodes({1});
   marray<double,2> muon_flux({1,2});
   marray<double,3> neutrino_state({1,2,3});
+  
+  std::string FileName;
+  if (argc>1)
+    FileName=std::string(argv[1]);
+  else
+    {
+      std::cout<<"No file name supplied, using standard sample"<<std::endl;
+      FileName="data/sample.txt";
+    }
 
-  std::string FileName="/data/user/bjones/Software/muSQuIDS/sample/flux_0.0_b0.0000_E.txt";
   LoadData(e_nodes,muon_flux,neutrino_state,FileName);
 
   muSQUIDS musq(e_nodes);
