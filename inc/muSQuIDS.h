@@ -83,8 +83,8 @@ class muSQUIDS: public nuSQUIDS {
     muSQUIDS(marray<double,1> E_range,
              int numneu=3, nusquids::NeutrinoType NT=nusquids::both,bool iinteraction=true):
       nuSQUIDS(E_range,numneu,NT,iinteraction,std::make_shared<nusquids::NeutrinoDISCrossSectionsFromTablesExtended>()),
-      scalar_spline(gsl_spline_alloc(gsl_interp_cspline,E_range.size()),[](gsl_spline* t){ gsl_spline_free(t); delete t;}),
-      scalar_spline_acc(gsl_interp_accel_alloc(),[](gsl_interp_accel* t){ gsl_interp_accel_free(t); delete t;})
+      scalar_spline(gsl_spline_alloc(gsl_interp_cspline,E_range.size()),[](gsl_spline* t){ gsl_spline_free(t);}),
+      scalar_spline_acc(gsl_interp_accel_alloc(),[](gsl_interp_accel* t){ gsl_interp_accel_free(t);})
     {
       // resetting squids nodes to the right scalar size
       ini(ne,numneu,nrhos,2,Get_t());
