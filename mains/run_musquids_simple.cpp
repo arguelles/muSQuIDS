@@ -12,7 +12,7 @@ int main()
 {
   squids::Const units;
 
-  nusquids::marray<double,1> e_nodes = logspace(1.0e1*units.GeV,1.0e3*units.GeV,100);
+  nusquids::marray<double,1> e_nodes = logspace(1.0e0*units.GeV,1.0e3*units.GeV,200);
   muSQUIDS musq(e_nodes);
 
   std::shared_ptr<Vacuum> vacuum = std::make_shared<Vacuum>();
@@ -22,9 +22,12 @@ int main()
 
   // construct muon flux
   marray<double,2> muon_flux({e_nodes.size(),2});
+  std::fill(muon_flux.begin(),muon_flux.end(),0);
   for(size_t ie=0; ie<e_nodes.size(); ie++){
-    muon_flux[ie][0] = 1.;
-    muon_flux[ie][1] = 1.;
+    if(e_nodes[ie]>100.0*units.GeV){
+      muon_flux[ie][0] = 1.;
+      muon_flux[ie][1] = 0.;
+    }
   }
 
   marray<double,3> neutrino_state({e_nodes.size(),2,musq.GetNumNeu()});
@@ -43,8 +46,15 @@ int main()
 
   musq.EvolveState();
 
+  unsigned int e = 0;
+  unsigned int mu = 1;
+  unsigned int tau = 2;
   for(size_t ie=0; ie<e_nodes.size(); ie++){
-    std::cout << e_nodes[ie]/units.GeV << " " << musq.GetMuonFlux(ie,0) << " " << musq.GetMuonFlux(ie,1) << std::endl;
+    std::cout << e_nodes[ie]/units.GeV << " " << musq.GetMuonFlux(ie,0) << " " << musq.GetMuonFlux(ie,1) << " ";
+    std::cout << musq.EvalFlavorAtNode(e,ie,0) << " " << musq.EvalFlavorAtNode(e,ie,1) << " ";
+    std::cout << musq.EvalFlavorAtNode(mu,ie,0) << " " << musq.EvalFlavorAtNode(mu,ie,1) << " ";
+    std::cout << musq.EvalFlavorAtNode(tau,ie,0) << " " << musq.EvalFlavorAtNode(tau,ie,1) << " ";
+    std::cout << std::endl;
   }
 
   return 0;
