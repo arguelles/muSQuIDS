@@ -1,7 +1,7 @@
 # FLAGS
-CFLAGS= -O3 -fPIC -std=c++11
+CFLAGS= -O3 -fPIC -std=c++11 
 CFLAGS+= -I./inc `pkg-config --cflags nusquids`
-LDFLAGS+= `pkg-config --libs nusquids`
+LDFLAGS+= `pkg-config --libs nusquids` -lsupc++
 
 mains/run_musquids : mains/run_musquids.cpp
 	@echo Compiling run_musquids
