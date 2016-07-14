@@ -38,8 +38,10 @@ class muSQUIDS: public nuSQUIDS {
       // From T. Gaisser Cosmic Ray book
       // From http://pdg.lbl.gov/2015/AtomicNuclearProperties/
       // Good from Emuon>10Gev
-      double RadDensH=4.405e5*params.gr/(params.cm*params.cm);
-      return (-1.9-0.08*log(Emuon/params.muon_mass))*current_density*params.MeV/params.cm-Emuon/RadDensH;
+      double RadDensH=4.405e5; // gr/cm^2
+      // current_density in gr/cm^3
+      // coeffcients in MeV/cm^2
+      return (((-1.9-0.08*log(Emuon/params.muon_mass))*-(Emuon/params.MeV)/RadDensH)*current_density)*(params.MeV/params.cm);
     }
     double Fmue(double Emuon, double Enu) const {
       // Fits to muon decay spectrum including spin
@@ -57,7 +59,7 @@ class muSQUIDS: public nuSQUIDS {
   protected:
     // These scalar functions will manage the muon decay and energy loss
     double GammaScalar(unsigned int ei,unsigned int index_scalar) const {
-      double muon_decay_term = state[ei].scalar[index_scalar]*inv_lambda[ei];
+      double muon_decay_term = inv_lambda[ei];
       return nuSQUIDS::GammaScalar(ei,index_scalar) + muon_decay_term;
     }
     double InteractionsScalar(unsigned int ei,unsigned int index_scalar) const {

@@ -24,7 +24,7 @@ int main()
   marray<double,2> muon_flux({e_nodes.size(),2});
   for(size_t ie=0; ie<e_nodes.size(); ie++){
     muon_flux[ie][0] = 1.;
-    muon_flux[ie][1] = 0.;
+    muon_flux[ie][1] = 1.;
   }
 
   marray<double,3> neutrino_state({e_nodes.size(),2,musq.GetNumNeu()});
@@ -39,7 +39,7 @@ int main()
   */
 
   musq.Set_initial_state(muon_flux,neutrino_state,flavor);
-  musq.Set_ProgressBar(true);
+  //musq.Set_ProgressBar(true);
 
   musq.EvolveState();
 
