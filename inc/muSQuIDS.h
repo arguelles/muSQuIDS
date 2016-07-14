@@ -40,8 +40,15 @@ class muSQUIDS: public nuSQUIDS {
       double RadDensH=4.405e5*params.gr/(params.cm*params.cm);
       return (-1.9-0.08*log(Emuon/params.muon_mass))*current_density*params.MeV/params.cm-Emuon/RadDensH;
     }
-    double F(double Emuon, double Enu) const {
-      return 0;
+    double Fmue(double Emuon, double Enu) const {
+      // Fits to muon decay spectrum including spin
+      double z = Enu/Emuon;
+      return (1.79779466e-02*pow(z,4)+1.20239959e+01*pow(z,3.)-2.38837016e+01*z*z+1.17861335e+01*z+5.85725324e-02)/Emuon;
+    }
+    double Fmumu(double Emuon, double Enu) const {
+      // Fits to muon decay spectrum including spin
+      double z = Enu/Emuon;
+      return (-0.24794224*pow(z,4.)+4.51300659*pow(z,3.)-6.2556965*z*z-0.03647084*z+2.02480429)/Emuon;
     }
     double lambda(double Emuon) const {
       return Emuon*params.muon_lifetime/params.muon_mass;
@@ -59,15 +66,15 @@ class muSQUIDS: public nuSQUIDS {
     // This rho function will add the neutrinos from muon decay
     squids::SU_vector InteractionsRho(unsigned int ei,unsigned int index_rho) const {
       squids::SU_vector from_muon_decay_terms(nsun);
-      double muon_decay_integral = 0.;
-      double other_muon_decay_integral = 0.;
+      double muon_decay_to_muon_integral = 0.;
+      double muon_decay_to_e_integral = 0.;
       unsigned int other_index_rho = (index_rho == 0) ? 1 : 0;
       for(unsigned int em = ei+1; em < ne; em++){ // loop in the tau neutrino energies
-        muon_decay_integral += state[em].scalar[index_rho]*F(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
-        other_muon_decay_integral += state[em].scalar[other_index_rho]*F(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
+        muon_decay_to_muon_integral += state[em].scalar[index_rho]*Fmumu(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
+        muon_decay_to_e_integral += state[em].scalar[other_index_rho]*Fmue(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
       }
-      from_muon_decay_terms += evol_b1_proj[index_rho][1][ei]*muon_decay_integral;
-      from_muon_decay_terms += evol_b1_proj[index_rho][0][ei]*other_muon_decay_integral;
+      from_muon_decay_terms += evol_b1_proj[index_rho][1][ei]*muon_decay_to_muon_integral;
+      from_muon_decay_terms += evol_b1_proj[index_rho][0][ei]*muon_decay_to_e_integral;
       return nuSQUIDS::InteractionsRho(ei,index_rho) + from_muon_decay_terms;
     }
   public:
@@ -93,6 +100,18 @@ class muSQUIDS: public nuSQUIDS {
       // allocating splines
       scalar_spline.reset(gsl_spline_alloc(gsl_interp_cspline,ne));
       scalar_spline_acc.reset(gsl_interp_accel_alloc());
+    }
+
+    void Set_initial_state(const marray<double,2>& muon_flux,const marray<double,2>& neutrino_state,nusquids::Basis basis)
+    {
+      nuSQUIDS::Set_initial_state(neutrino_state,basis);
+
+      for(unsigned int ie = 0; ie < ne; ie++){
+        for(unsigned int ir = 0; ir < nscalars; ir++){
+          state[ie].scalar[ir] = muon_flux[ie][ir];
+        }
+      }
+
     }
 };
 
