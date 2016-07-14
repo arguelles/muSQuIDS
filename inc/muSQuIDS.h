@@ -5,6 +5,7 @@
 #include <iostream>
 #include <nuSQuIDS/nuSQuIDS.h>
 #include <gsl/gsl_deriv.h>
+#include "exCross.h"
 
 namespace musquids {
 using nusquids::nuSQUIDS;
@@ -81,9 +82,9 @@ class muSQUIDS: public nuSQUIDS {
     muSQUIDS(){}
     muSQUIDS(marray<double,1> E_range,
              int numneu=3, nusquids::NeutrinoType NT=nusquids::both,bool iinteraction=true):
-      nuSQUIDS(E_range,numneu,NT,iinteraction),
-      scalar_spline(new gsl_spline,[](gsl_spline* t){ gsl_spline_free(t); delete t;}),
-      scalar_spline_acc(new gsl_interp_accel,[](gsl_interp_accel* t){ gsl_interp_accel_free(t); delete t;})
+      nuSQUIDS(E_range,numneu,NT,iinteraction,std::make_shared<nusquids::NeutrinoDISCrossSectionsFromTablesExtended>()),
+      scalar_spline(gsl_spline_alloc(gsl_interp_cspline,E_range.size()),[](gsl_spline* t){ gsl_spline_free(t); delete t;}),
+      scalar_spline_acc(gsl_interp_accel_alloc(),[](gsl_interp_accel* t){ gsl_interp_accel_free(t); delete t;})
     {
       // resetting squids nodes to the right scalar size
       ini(ne,numneu,nrhos,2,Get_t());
@@ -97,9 +98,6 @@ class muSQUIDS: public nuSQUIDS {
       // initializing the scalar temporary state
       tmp_scalar_state.resize(ne);
       std::fill(tmp_scalar_state.begin(),tmp_scalar_state.end(),0);
-      // allocating splines
-      scalar_spline.reset(gsl_spline_alloc(gsl_interp_cspline,ne));
-      scalar_spline_acc.reset(gsl_interp_accel_alloc());
     }
 
     void Set_initial_state(const marray<double,2>& muon_flux,const marray<double,3>& neutrino_state,nusquids::Basis basis)
