@@ -16,7 +16,7 @@ int main()
   muSQUIDS musq(e_nodes);
 
   std::shared_ptr<Vacuum> vacuum = std::make_shared<Vacuum>();
-  std::shared_ptr<Vacuum::Track> vacuum_track = std::make_shared<Vacuum::Track>(500.*units.meter);
+  std::shared_ptr<Vacuum::Track> vacuum_track = std::make_shared<Vacuum::Track>(1000.*units.km);
   musq.Set_Body(vacuum);
   musq.Set_Track(vacuum_track);
 
