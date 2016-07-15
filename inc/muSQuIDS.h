@@ -41,7 +41,7 @@ class muSQUIDS: public nuSQUIDS {
       double RadDensH=4.405e5; // gr/cm^2
       // current_density in gr/cm^3
       // coeffcients in MeV/cm^2
-      return (((-1.9-0.08*log(Emuon/params.muon_mass))*-(Emuon/params.MeV)/RadDensH)*current_density)*(params.MeV/params.cm);
+      return (((-1.9-0.08*log(Emuon/params.muon_mass))-(Emuon/params.MeV)/RadDensH)*current_density)*(params.MeV/params.cm);
     }
     double Fmue(double Emuon, double Enu) const {
       // Fits to muon decay spectrum including spin
