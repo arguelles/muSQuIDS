@@ -13,6 +13,7 @@ int main()
   squids::Const units;
 
   nusquids::marray<double,1> e_nodes = logspace(1.0e0*units.GeV,1.0e3*units.GeV,200);
+  //nusquids::marray<double,1> e_nodes = linspace(1.0e0*units.GeV,1.0e3*units.GeV,100);
   muSQUIDS musq(e_nodes);
 
   std::shared_ptr<Vacuum> vacuum = std::make_shared<Vacuum>();
