@@ -27,6 +27,7 @@ mains/run_musquids_less_simple : mains/run_musquids_less_simple.cpp mains/exCros
 
 .PHONY: clean
 clean:
-	rm -rf ./mains/run_musquids ./mains/run_musquids_simple
+	rm -rf ./mains/run_musquids ./mains/run_musquids_simple ./mains/run_musquids_less_simple
+
 
 

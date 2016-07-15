@@ -34,7 +34,7 @@ class muSQUIDS: public nuSQUIDS {
       }
     }
   protected:
-    double EnergyLoss(double Emuon) const{
+    double EnergyLoss(double Emuon) const {
       // From T. Gaisser Cosmic Ray book
       // From http://pdg.lbl.gov/2015/AtomicNuclearProperties/
       // Good from Emuon>10Gev
@@ -59,7 +59,7 @@ class muSQUIDS: public nuSQUIDS {
   protected:
     // These scalar functions will manage the muon decay and energy loss
     double GammaScalar(unsigned int ei,unsigned int index_scalar) const {
-      double muon_decay_term = inv_lambda[ei];
+      double muon_decay_term=inv_lambda[ei];
       return nuSQUIDS::GammaScalar(ei,index_scalar) + muon_decay_term;
     }
     double InteractionsScalar(unsigned int ei,unsigned int index_scalar) const {
@@ -73,8 +73,8 @@ class muSQUIDS: public nuSQUIDS {
       double muon_decay_to_e_integral = 0.;
       unsigned int other_index_rho = (index_rho == 0) ? 1 : 0;
       for(unsigned int em = ei+1; em < ne; em++){ // loop in the tau neutrino energies
-        muon_decay_to_muon_integral += state[em].scalar[index_rho]*Fmumu(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
-        muon_decay_to_e_integral += state[em].scalar[other_index_rho]*Fmue(E_range[em],E_range[ei])*inv_lambda[em]*delE[em];
+        muon_decay_to_muon_integral += state[em].scalar[index_rho]*Fmumu(E_range[em],E_range[ei])*inv_lambda[em]*delE[em-1];
+        muon_decay_to_e_integral += state[em].scalar[other_index_rho]*Fmue(E_range[em],E_range[ei])*inv_lambda[em]*delE[em-1];
       }
       from_muon_decay_terms += evol_b1_proj[index_rho][1][ei]*muon_decay_to_muon_integral;
       from_muon_decay_terms += evol_b1_proj[index_rho][0][ei]*muon_decay_to_e_integral;
