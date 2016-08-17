@@ -1,8 +1,8 @@
 # FLAGS
 
-CFLAGS= -O3 -fPIC -std=c++11 -g
+CFLAGS= -O3 -fPIC -std=c++11
 CFLAGS+= -I./inc `pkg-config --cflags nusquids`
-LDFLAGS+= `pkg-config --libs nusquids`
+LDFLAGS+= `pkg-config --libs nusquids` -lrt -lsupc++
 
 ifeq ($(UNAME_S),Linux)
 	LDFLAGS+=-lsupc++
