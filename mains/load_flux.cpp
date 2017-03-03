@@ -75,10 +75,10 @@ int LoadData(nusquids::marray<double,1>& e_nodes,
       muon_flux[i][0]         = stod(Fluxes[nMUMINUS*pEND  + pTOTAL][i]);
       muon_flux[i][1]         = stod(Fluxes[nMUPLUS*pEND   + pTOTAL][i]);
       neutrino_state[i][0][0] = stod(Fluxes[nNUE*pEND      + pTOTAL][i]);
-      neutrino_state[i][1][1] = stod(Fluxes[nNUEBAR*pEND   + pTOTAL][i]);
-      neutrino_state[i][0][2] = stod(Fluxes[nNUMU*pEND     + pTOTAL][i]);
-      neutrino_state[i][1][0] = stod(Fluxes[nNUMUBAR*pEND  + pTOTAL][i]);
-      neutrino_state[i][0][1] = stod(Fluxes[nNUTAU*pEND    + pTOTAL][i]);
+      neutrino_state[i][1][0] = stod(Fluxes[nNUEBAR*pEND   + pTOTAL][i]);
+      neutrino_state[i][0][1] = stod(Fluxes[nNUMU*pEND     + pTOTAL][i]);
+      neutrino_state[i][1][1] = stod(Fluxes[nNUMUBAR*pEND  + pTOTAL][i]);
+      neutrino_state[i][0][2] = stod(Fluxes[nNUTAU*pEND    + pTOTAL][i]);
       neutrino_state[i][1][2] = stod(Fluxes[nNUTAUBAR*pEND + pTOTAL][i]);
   }
 
